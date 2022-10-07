@@ -2,7 +2,7 @@
 
 Simple multiplayer buzzer system
 
-https://multibuzz.app
+https://buzzer.aarushmagic.com
 
 Built using Create React App and boardgame.io
 
