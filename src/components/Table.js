@@ -13,6 +13,7 @@ export default function Table(game) {
   const [lastBuzz, setLastBuzz] = useState(null);
   const [sound, setSound] = useState(false);
   const [soundPlayed, setSoundPlayed] = useState(false);
+  const [delayLocking, setDelayLocking] = useState(false);
   const buzzButton = useRef(null);
   const queueRef = useRef(null);
 
@@ -126,6 +127,16 @@ export default function Table(game) {
     return `+${delta} ms`;
   };
 
+  const delayLock = () => {
+    setDelayLocking(true);
+    setTimeout(() => {
+      if (!game.G.locked) {
+        game.moves.toggleLock();
+      }
+      setDelayLocking(false);
+    }, 5000);
+  }
+
   return (
     <div>
       <Header
@@ -163,10 +174,19 @@ export default function Table(game) {
             <div className="settings">
               <div className="button-container">
                 <button
+		  disabled={delayLocking}
                   className="text-button"
                   onClick={() => game.moves.toggleLock()}
                 >
                   {game.G.locked ? 'Unlock buzzers' : 'Lock buzzers'}
+                </button>
+              </div>
+              <div className="button-container">
+                <button
+                  disabled={game.G.locked || delayLocking}
+                  onClick={() => delayLock()}
+                >
+                  {delayLocking ? "Locking..." : "Lock Buzzer in 5 seconds" }
                 </button>
               </div>
               <div className="button-container">
